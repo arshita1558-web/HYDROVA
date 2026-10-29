@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Analytics{% endblock %}
+{% block head %}<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>{% endblock %}
+{% block content %}
+<section class="page-intro"><div class="eyebrow">DATA OVERVIEW / 04</div><h1>Community <span>analytics</span></h1><p>Explore report patterns over time. Charts reflect submitted records, not confirmed cases or disease prevalence.</p></section>
+<div class="charts-grid">
+  <article class="panel chart-panel"><div class="panel-heading"><div><div class="eyebrow">LAST 14 DAYS</div><h2>Symptom reports over time</h2></div><span class="chart-mark">↗</span></div><div class="chart-wrap"><canvas id="dailyChart" aria-label="Symptom reports by date"></canvas></div>{% if not daily %}<p class="chart-empty">No symptom data yet. Add reports or load fictional demo data from Admin.</p>{% endif %}</article>
+  <article class="panel chart-panel"><div class="panel-heading"><div><div class="eyebrow">BY COMMUNITY</div><h2>Reports by village</h2></div><span class="chart-mark">⌖</span></div><div class="chart-wrap"><canvas id="villageChart" aria-label="Symptom reports by village"></canvas></div>{% if not by_village %}<p class="chart-empty">Village data will appear here after reports are submitted.</p>{% endif %}</article>
+  <article class="panel chart-panel chart-wide"><div class="panel-heading"><div><div class="eyebrow">WATER QUALITY</div><h2>Recorded testing outcomes</h2></div><span class="chart-mark">◉</span></div><div class="chart-wrap water-chart-wrap"><canvas id="waterChart" aria-label="Water testing outcomes"></canvas></div>{% if not water %}<p class="chart-empty">No water reports yet.</p>{% endif %}</article>
+</div>
+<div class="note-box"><span>ⓘ</span><p>Charts summarize entries in this prototype. They should not be used to make medical decisions without verified data and expert review.</p></div>
+{% endblock %}
+{% block scripts %}
+<script>
+const dailyLabels = {{ daily | map(attribute='day') | list | tojson }};
+const dailyValues = {{ daily | map(attribute='total') | list | tojson }};
+const villageLabels = {{ by_village | map(attribute='village') | list | tojson }};
+const villageValues = {{ by_village | map(attribute='total') | list | tojson }};
+const waterLabels = {{ water | map(attribute='result') | list | tojson }};
+const waterValues = {{ water | map(attribute='total') | list | tojson }};
+const commonOptions = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, ticks: { color: '#718096' } }, y: { beginAtZero: true, ticks: { precision: 0, color: '#718096' }, grid: { color: '#edf1f5' } } } };
+if (window.Chart) {
+  new Chart(document.getElementById('dailyChart'), { type: 'line', data: { labels: dailyLabels, datasets: [{ label: 'Reports', data: dailyValues, borderColor: '#0e9f9a', backgroundColor: 'rgba(14,159,154,.12)', fill: true, tension: .35, pointRadius: 3 }] }, options: commonOptions });
+  new Chart(document.getElementById('villageChart'), { type: 'bar', data: { labels: villageLabels, datasets: [{ label: 'Reports', data: villageValues, backgroundColor: '#5b8def', borderRadius: 6 }] }, options: { ...commonOptions, indexAxis: 'y', scales: { x: { beginAtZero: true, ticks: { precision: 0, color: '#718096' }, grid: { color: '#edf1f5' } }, y: { grid: { display: false }, ticks: { color: '#718096' } } } } });
+  new Chart(document.getElementById('waterChart'), { type: 'doughnut', data: { labels: waterLabels, datasets: [{ data: waterValues, backgroundColor: ['#0e9f9a', '#e66a65', '#e7aa43', '#8b9bb0'], borderWidth: 0, hoverOffset: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 18, color: '#526174' } } }, cutout: '68%' } });
+}
+</script>
+{% endblock %}

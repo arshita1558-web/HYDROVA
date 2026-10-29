@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Health awareness{% endblock %}
+{% block content %}
+<section class="page-intro"><div class="eyebrow">LEARN / 05</div><h1>Water & health <span>awareness</span></h1><p>Simple, general reminders about reducing water-related health risks. Follow local public-health guidance for your area.</p></section>
+<div class="awareness-grid">
+  <article class="awareness-card"><div class="awareness-number">01</div><div class="awareness-icon">💧</div><h2>Use safe drinking water</h2><p>Use water from a source considered safe by local authorities. If safety is uncertain, follow official local advice on treatment or alternative sources.</p></article>
+  <article class="awareness-card"><div class="awareness-number">02</div><div class="awareness-icon">✋</div><h2>Wash hands</h2><p>Wash hands with soap and safe water, especially before preparing food or eating and after using the toilet.</p></article>
+  <article class="awareness-card"><div class="awareness-number">03</div><div class="awareness-icon">🥗</div><h2>Handle food safely</h2><p>Keep food and utensils clean, prepare food with safe water, and store food in a way that limits contamination.</p></article>
+  <article class="awareness-card"><div class="awareness-number">04</div><div class="awareness-icon">🩺</div><h2>Seek medical advice</h2><p>Seek qualified medical advice for persistent symptoms or concerns. Signs of severe dehydration or other serious illness need urgent care.</p></article>
+</div>
+<div class="callout-banner"><div><div class="eyebrow">COMMUNITY ACTION</div><h2>Small reports can help start a conversation.</h2><p>Share concerns with the appropriate local health or water authority so they can verify information and guide the response.</p></div><a class="btn btn-light" href="{{ url_for('report_symptoms') }}">Submit a report →</a></div>
+{% endblock %}

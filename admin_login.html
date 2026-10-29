@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Admin login{% endblock %}
+{% block content %}
+<section class="page-intro"><div class="eyebrow">RESTRICTED AREA</div><h1>Admin <span>login</span></h1><p>For the local project demonstration only.</p></section>
+<div class="login-wrap"><form class="panel form-panel login-panel" method="post"><div class="side-icon">⌑</div><h2>Welcome back</h2><p class="subtle">Sign in to review reports and manage alert statuses.</p><div class="field"><label for="password">Admin password</label><input id="password" type="password" name="password" required autocomplete="current-password" placeholder="Enter password"></div><button class="btn btn-primary btn-full" type="submit">Sign in →</button><small class="form-hint">Local demo password is listed in README.md. Change it before any deployment.</small></form></div>
+{% endblock %}

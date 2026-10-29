@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Admin panel{% endblock %}
+{% block content %}
+<section class="page-intro"><div class="eyebrow">RESTRICTED AREA</div><h1>Admin <span>panel</span></h1><p>Review submitted reports and update the status of potential-risk alerts.</p></section>
+<div class="admin-toolbar panel"><div><h2>Demo data</h2><p>Fictional entries help you demonstrate the charts and alerts.</p></div><form method="post" action="{{ url_for('seed_demo') }}"><button class="btn btn-primary" type="submit">＋ Add fictional demo data</button></form></div>
+
+<section class="panel admin-section"><div class="panel-heading"><div><div class="eyebrow">REVIEW QUEUE</div><h2>Alert management</h2></div><span class="date-pill">{{ alerts|length }} alerts</span></div>
+{% if alerts %}<div class="table-wrap"><table><thead><tr><th>Community / type</th><th>Message</th><th>Date</th><th>Status</th><th>Update</th></tr></thead><tbody>
+{% for alert in alerts %}<tr><td><b>{{ alert.village }}</b><br><span class="tag tag-amber">{{ alert.alert_type }}</span></td><td class="message-cell">{{ alert.message }}</td><td>{{ alert.alert_date }}</td><td><span class="tag {{ 'tag-red' if alert.status == 'Open' else 'tag-gray' }}">{{ alert.status }}</span></td><td><form class="inline-form" method="post" action="{{ url_for('update_alert', alert_id=alert.id) }}"><select name="status" aria-label="Alert status"><option {{ 'selected' if alert.status == 'Open' else '' }}>Open</option><option {{ 'selected' if alert.status == 'Reviewed' else '' }}>Reviewed</option><option {{ 'selected' if alert.status == 'Resolved' else '' }}>Resolved</option></select><button class="btn btn-small btn-primary" type="submit">Save</button></form></td></tr>{% endfor %}
+</tbody></table></div>{% else %}<p class="empty-inline">No alerts yet.</p>{% endif %}</section>
+
+<section class="panel admin-section"><div class="panel-heading"><div><div class="eyebrow">SYMPTOM REPORTS</div><h2>Submitted symptoms</h2></div><span class="date-pill">{{ symptoms|length }} records</span></div>
+{% if symptoms %}<div class="table-wrap"><table><thead><tr><th>Community</th><th>Date</th><th>Symptoms</th><th>Age group</th><th>Notes</th></tr></thead><tbody>{% for row in symptoms %}<tr><td class="strong-cell">{{ row.village }}</td><td>{{ row.report_date }}</td><td>{{ row.symptoms }}</td><td>{{ row.age_group }}</td><td>{{ row.notes or '—' }}</td></tr>{% endfor %}</tbody></table></div>{% else %}<p class="empty-inline">No symptom reports yet.</p>{% endif %}</section>
+
+<section class="panel admin-section"><div class="panel-heading"><div><div class="eyebrow">WATER QUALITY</div><h2>Water reports</h2></div><span class="date-pill">{{ water|length }} records</span></div>
+{% if water %}<div class="table-wrap"><table><thead><tr><th>Community</th><th>Date</th><th>Result</th><th>Notes</th></tr></thead><tbody>{% for row in water %}<tr><td class="strong-cell">{{ row.village }}</td><td>{{ row.test_date }}</td><td><span class="tag {{ 'tag-red' if row.result == 'Unsafe' else 'tag-aqua' }}">{{ row.result }}</span></td><td>{{ row.notes or '—' }}</td></tr>{% endfor %}</tbody></table></div>{% else %}<p class="empty-inline">No water reports yet.</p>{% endif %}</section>
+<div class="note-box"><span>ⓘ</span><p>Keep this app on your own computer for the demo. It is not ready to store real patient data or be exposed to the public internet.</p></div>
+{% endblock %}

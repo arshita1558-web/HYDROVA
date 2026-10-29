@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Report symptoms{% endblock %}
+{% block content %}
+<section class="page-intro"><div class="eyebrow">COMMUNITY REPORTING / 01</div><h1>Report <span>symptoms</span></h1><p>Enter a community-level report so health teams can monitor patterns. Do not include names, phone numbers, addresses, or other identifying details.</p></section>
+<div class="form-layout">
+  <form class="panel form-panel" method="post">
+    <div class="form-section-title"><span class="step-number">01</span><div><h2>Where and when?</h2><p>Basic details about the report</p></div></div>
+    <div class="field"><label for="village">Village / community <span class="required">*</span></label><input id="village" name="village" maxlength="100" required placeholder="e.g. Demo Village A"></div>
+    <div class="field"><label for="report_date">Date of report <span class="required">*</span></label><input id="report_date" name="report_date" type="date" max="{{ today }}" required><small>For this demo, choose today or a recent date. The app accepts dates within the last 90 days.</small></div>
+    <div class="field"><label>Age group (optional)</label><select name="age_group">{% for group in age_groups %}<option>{{ group }}</option>{% endfor %}</select><small>Do not enter a person's exact age or identity.</small></div>
+    <div class="form-divider"></div>
+    <div class="form-section-title"><span class="step-number">02</span><div><h2>Symptoms observed</h2><p>Select all that apply <span class="required">*</span></p></div></div>
+    <div class="checkbox-grid">{% for symptom in symptom_options %}<label class="check-card"><input type="checkbox" name="symptoms" value="{{ symptom }}"><span class="custom-check"></span><span>{{ symptom }}</span></label>{% endfor %}</div>
+    <div class="field"><label for="notes">Additional non-identifying notes (optional)</label><textarea id="notes" name="notes" rows="3" maxlength="500" placeholder="Any relevant community-level observations…"></textarea></div>
+    <div class="form-actions"><button class="btn btn-primary" type="submit">Save symptom report <span>→</span></button><span class="privacy-note">🔒 Minimal information only</span></div>
+  </form>
+  <aside class="side-info">
+    <div class="side-card side-tint"><div class="side-icon">✳</div><h3>Why report?</h3><p>Reports can help reviewers notice changes over time. One report alone does not establish the cause of symptoms.</p></div>
+    <div class="side-card"><h3>Keep reports safe</h3><ul class="clean-list"><li>Use community names only.</li><li>Never include patient names or contact details.</li><li>For urgent symptoms, contact a qualified health professional.</li></ul></div>
+    <div class="side-card side-warning"><b>Important</b><p>This student prototype is not an emergency service or a medical diagnosis tool.</p></div>
+  </aside>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <div class="eyebrow"><span class="pulse"></span> SMART WATER INTELLIGENCE</div>
+    <h1>Every Drop<br><span>Tells a Story.</span></h1>
+    <p>Monitor water quality, detect potential risks, and receive timely alerts. Cleaner water starts with better signals.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="{{ url_for('report_symptoms') }}">＋ Report a concern</a>
+      <a class="btn btn-ghost" href="{{ url_for('water_report') }}">Explore Water Insights ↗</a>
+    </div>
+  </div>
+  <div class="hero-art" aria-label="Water drop illustration">
+    <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+    <div class="water-drop"><span>✦</span></div>
+    <div class="art-label label-top"><b>EARLY</b><small>Signals</small></div>
+    <div class="art-label label-bottom"><b>COMMUNITY</b><small>First</small></div>
+  </div>
+</section>
+
+<section class="section-heading">
+  <div><div class="eyebrow">AT A GLANCE</div><h2>Community overview</h2></div>
+  <span class="date-pill">Updated {{ today }}</span>
+</section>
+<div class="stats-grid">
+  <article class="stat-card"><div class="stat-top"><span class="stat-icon aqua">⌁</span><span class="stat-caption">ALL TIME</span></div><div class="stat-number">{{ symptom_total }}</div><div class="stat-label">Symptom reports</div><div class="stat-foot">Community submissions</div></article>
+  <article class="stat-card"><div class="stat-top"><span class="stat-icon blue">◉</span><span class="stat-caption">ALL TIME</span></div><div class="stat-number">{{ water_total }}</div><div class="stat-label">Water reports</div><div class="stat-foot">Quality observations</div></article>
+  <article class="stat-card"><div class="stat-top"><span class="stat-icon amber">⚑</span><span class="stat-caption">NEEDS REVIEW</span></div><div class="stat-number">{{ open_alerts }}</div><div class="stat-label">Open alerts</div><div class="stat-foot">Potential risks to review</div></article>
+  <article class="stat-card"><div class="stat-top"><span class="stat-icon violet">⌖</span><span class="stat-caption">REPORTED AREAS</span></div><div class="stat-number">{{ village_total }}</div><div class="stat-label">Communities</div><div class="stat-foot">With at least one report</div></article>
+</div>
+
+<section class="content-grid">
+  <article class="panel">
+    <div class="panel-heading"><div><div class="eyebrow">LATEST ACTIVITY</div><h2>Recent reports</h2></div><a class="text-link" href="{{ url_for('analytics') }}">View analytics ↗</a></div>
+    {% if recent_reports %}
+    <div class="table-wrap"><table><thead><tr><th>Community</th><th>Type</th><th>Details</th><th>Date</th></tr></thead><tbody>
+    {% for report in recent_reports %}
+      <tr><td class="strong-cell">{{ report.village }}</td><td><span class="tag {{ 'tag-blue' if report.report_type == 'Water' else 'tag-aqua' }}">{{ report.report_type }}</span></td><td>{{ report.symptoms }}</td><td class="muted-cell">{{ report.report_date }}</td></tr>
+    {% endfor %}
+    </tbody></table></div>
+    {% else %}
+    <div class="empty-state"><div class="empty-icon">⌁</div><h3>No reports yet</h3><p>Add a report or use fictional demo data from the admin panel to explore the dashboard.</p><a class="text-link" href="{{ url_for('report_symptoms') }}">Create the first report →</a></div>
+    {% endif %}
+  </article>
+  <article class="panel alerts-panel">
+    <div class="panel-heading"><div><div class="eyebrow">EARLY WARNING</div><h2>Alerts to review</h2></div><a class="text-link" href="{{ url_for('alerts_page') }}">View all ↗</a></div>
+    {% if alerts %}
+      <div class="alert-list">
+      {% for alert in alerts %}
+        <div class="alert-row">
+          <div class="alert-symbol {{ 'danger' if alert.alert_type == 'Water quality' else 'warning' }}">{{ '!' if alert.alert_type == 'Water quality' else '↗' }}</div>
+          <div class="alert-content"><div class="alert-title">{{ alert.alert_type }} <span class="tag {{ 'tag-red' if alert.status == 'Open' else 'tag-gray' }}">{{ alert.status }}</span></div><p><b>{{ alert.village }}</b> · {{ alert.message }}</p><small>{{ alert.alert_date }}</small></div>
+        </div>
+      {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state compact"><div class="empty-icon">✓</div><h3>No open signals</h3><p>No potential-risk alerts have been generated from the current reports.</p></div>
+    {% endif %}
+    <div class="note-box"><span>ⓘ</span><p>Alerts are screening signals only. A qualified health official should verify reports before taking action.</p></div>
+  </article>
+</section>
+{% endblock %}

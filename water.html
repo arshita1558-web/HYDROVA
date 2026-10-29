@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Water quality{% endblock %}
+{% block content %}
+<section class="page-intro"><div class="eyebrow">COMMUNITY REPORTING / 02</div><h1>Water <span>quality</span></h1><p>Record a water-testing result or a concern about a local water source. Only mark a result based on available observations or testing.</p></section>
+<div class="form-layout">
+  <form class="panel form-panel" method="post">
+    <div class="form-section-title"><span class="step-number">01</span><div><h2>Water report details</h2><p>Where was the source checked?</p></div></div>
+    <div class="field"><label for="village">Village / community <span class="required">*</span></label><input id="village" name="village" maxlength="100" required placeholder="e.g. Demo Village A"></div>
+    <div class="field"><label for="test_date">Test / observation date <span class="required">*</span></label><input id="test_date" name="test_date" type="date" max="{{ today }}" required></div>
+    <div class="field"><label for="result">Water-testing result <span class="required">*</span></label><select id="result" name="result" required><option value="">Choose a result</option>{% for result in water_results %}<option value="{{ result }}">{{ result }}</option>{% endfor %}</select><small>“Unsafe” should only be selected when supported by a test result or authorized assessment.</small></div>
+    <div class="field"><label for="notes">Notes (optional)</label><textarea id="notes" name="notes" rows="4" maxlength="500" placeholder="Source type, test reference, or community concern…"></textarea></div>
+    <div class="form-actions"><button class="btn btn-primary" type="submit">Save water report <span>→</span></button><span class="privacy-note">⌁ Community-level data</span></div>
+  </form>
+  <aside class="side-info">
+    <div class="side-card side-tint"><div class="side-icon">◉</div><h3>Water safety matters</h3><p>Safe water, sanitation, and handwashing help reduce the spread of many infections.</p></div>
+    <div class="side-card"><h3>If contamination is suspected</h3><ul class="clean-list"><li>Contact the relevant local water or public-health authority.</li><li>Follow official advice about drinking-water safety.</li><li>Do not rely on this website to verify a source.</li></ul></div>
+  </aside>
+</div>
+{% endblock %}

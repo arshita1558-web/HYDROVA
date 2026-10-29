@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Early-warning alerts{% endblock %}
+{% block content %}
+<section class="page-intro"><div class="eyebrow">MONITORING / 03</div><h1>Early-warning <span>alerts</span></h1><p>Potential signals generated from submitted reports. Every alert requires human review and verification.</p></section>
+<div class="panel">
+  <div class="panel-heading"><div><div class="eyebrow">REVIEW QUEUE</div><h2>All alerts</h2></div><span class="date-pill">{{ alerts|length }} total</span></div>
+  {% if alerts %}
+  <div class="table-wrap"><table><thead><tr><th>Community</th><th>Alert type</th><th>Message</th><th>Date</th><th>Status</th></tr></thead><tbody>
+  {% for alert in alerts %}
+    <tr><td class="strong-cell">{{ alert.village }}</td><td><span class="tag {{ 'tag-red' if alert.alert_type == 'Water quality' else 'tag-amber' }}">{{ alert.alert_type }}</span></td><td class="message-cell">{{ alert.message }}</td><td class="muted-cell">{{ alert.alert_date }}</td><td><span class="tag {{ 'tag-red' if alert.status == 'Open' else 'tag-gray' }}">{{ alert.status }}</span></td></tr>
+  {% endfor %}
+  </tbody></table></div>
+  {% else %}
+  <div class="empty-state"><div class="empty-icon">✓</div><h3>No alerts generated</h3><p>As reports are submitted, the prototype checks simple rules for unusual symptom increases and unsafe water reports.</p><a class="btn btn-primary" href="{{ url_for('report_symptoms') }}">Add a symptom report</a></div>
+  {% endif %}
+  <div class="note-box"><span>ⓘ</span><p>These rules are illustrative, not clinically validated. A flagged signal is not proof of an outbreak or contamination event.</p></div>
+</div>
+{% endblock %}
